@@ -2,10 +2,10 @@ export const fetchUser = () => {
 
     if (typeof window !== 'undefined') {
       const userInfo =
-      localStorage.getItem('user') !== 'undefined'
-        ? JSON.parse(localStorage.getItem('user'))
+      localStorage.getItem('userId') !== 'undefined'
+        ? JSON.parse(localStorage.getItem('userId'))
         : localStorage.clear()
-  
+   console.log("fetched userid",userInfo)
     return userInfo
     }
     

@@ -18,11 +18,11 @@ const Firstpage = () => {
     const [text,setText]=useState("")
     const startTimer = () => {
         
-        const countdownDate1 = new Date('Mar 3, 2023 13:42:00 GMT+0530').getTime()
-        const countdownDate2 = new Date('Mar 3, 2023 13:44:00 GMT+0530').getTime()
-        const countdownDate3 = new Date('Mar 3, 2023 13:46:00 GMT+0530').getTime()
-        const countdownDate4 = new Date('Mar 3, 2023 13:48:00 GMT+0530').getTime()
-        const countdownDate5 = new Date('Mar 3, 2023 13:50:00 GMT+0530').getTime()
+        const countdownDate1 = new Date('Mar 3, 2023 23:25:00 GMT+0530').getTime()
+        const countdownDate2 = new Date('Mar 3, 2023 23:26:00 GMT+0530').getTime()
+        const countdownDate3 = new Date('Mar 3, 2023 23:27:00 GMT+0530').getTime()
+        const countdownDate4 = new Date('Mar 3, 2023 23:28:00 GMT+0530').getTime()
+        const countdownDate5 = new Date('Mar 3, 2023 23:29:00 GMT+0530').getTime()
       
           let now = new Date().getTime()
            distance1 = Math.floor(((countdownDate1-now ) % (1000 * 60)) / 1000)
@@ -35,7 +35,7 @@ const Firstpage = () => {
           console.log("render");
          // text=distance1>0?"distance1":"distance2"
          //text=distance1>0?"distance1":(distance2>0?"distance2":(distance3>0?"distance3":(distance4>0?"distance4":"distance5")))
-         distance1>0?(router.replace('year1')):(distance2>0?(router.replace('year2')):(distance3>0?(router.replace('year3')):(distance4>0?(router.replace('year4')):(distance5>0?(router.replace('year5')):(router.replace('/'))))))
+         distance1>0?(router.replace('year1')):(distance2>0?(router.replace('year2')):(distance3>0?(router.replace('year3')):(distance4>0?(router.replace('year4')):(distance5>0?(router.replace('year5')):(router.replace('/thankyou'))))))
          
        
       }

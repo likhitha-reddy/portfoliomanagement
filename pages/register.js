@@ -1,45 +1,34 @@
 import { ref, serverTimestamp, set, update } from 'firebase/database'
 import React, { useEffect, useState } from 'react'
-import { useContext } from 'react'
-import { getDatabase,  onValue} from "firebase/database";
 import { useRouter } from 'next/router'
-import GlobalContext from './globalcontext'
 import { fetchUser,userAccessToken } from './fetchDetails'
 import { app,db} from './firebase_data';
-import CryptoJS from "crypto-js";
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { SHA256 } from "crypto-js";
 const Register = () => {
-  const global = useContext(GlobalContext)
-  const db2Ref = ref(db, 'users');
-  const secretPass = "XkhZG4fW2t2W";
-  
+  const auth = getAuth(app)
   const [user, setUser] = useState(null)
   const router = useRouter()
   useEffect(() => {
-    const accessToken = userAccessToken()
-    if (!accessToken) return router.push('/')
-    const [userInfo] = fetchUser()
-
-    setUser(userInfo.uid)
-    console.log(userInfo.uid)
+   
   }, [])
   const uid = user
   const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phoneNo, setPhoneNo] = useState('')
     const [roll, setRoll] = useState('')
+  
+
     const[password,setPassword]=useState('')
-    const [encrptedData, setEncrptedData] = useState("");
     const handleSubmit = async (e) => {
     
       e.preventDefault()
       try {
-        const data = CryptoJS.AES.encrypt(
-          JSON.stringify(password),
-          secretPass
-        ).toString();
-    
-        setEncrptedData(data);
-        const postListRef = ref(db, 'users/' + uid)
+        const res = await createUserWithEmailAndPassword(auth, email, password);
+        const user = res.user;
+        console.log("user",res.UserCredentialImpl)
+        let encryption = SHA256(password).toString();
+        const postListRef = ref(db, 'users/' + res.user.uid)
         set(postListRef, {
           name,
           email,
@@ -51,7 +40,7 @@ const Register = () => {
           Deval:500,
           total_amount:2000,
 
-          password:encrptedData,
+          password:encryption,
           timestamp:serverTimestamp()
         })
         router.replace('Firstpage')
@@ -149,7 +138,7 @@ const Register = () => {
                 type='password'
                 name='password'
                id='password'
-                onChange={(e) => setPassword(e.target.value.toUpperCase())}
+                onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 placeholder='Enter password'
               />

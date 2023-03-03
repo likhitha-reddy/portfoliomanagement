@@ -22,6 +22,7 @@ const Year2 = () => {
         const [C_,setC_]=useState(0)
         const [D_,setD_]=useState(0)
         const [H_,setH_]=useState(0)
+        const [sy,setSy]=useState(false)
       
        
      
@@ -35,9 +36,15 @@ const Year2 = () => {
       })
       const [user, setUser] = useState(null)
       useEffect(() => {
+        
+        const userInfo = fetchUser()
+    
+        setUser(userInfo)
+        console.log("id",userInfo)
+        
          setInterval(() =>
         {
-          const countdownDate1 = new Date('Mar 3, 2023 13:44:00 GMT+0530').getTime()
+          const countdownDate1 = new Date('Mar 3, 2023 23:26:00 GMT+0530').getTime()
           let now = new Date().getTime()
           if(now>=countdownDate1)
           {
@@ -45,7 +52,7 @@ const Year2 = () => {
           }
         } , 1000);
        
-        const dbRef = ref(db, `users/${uid}`);
+        const dbRef = ref(db, `users/${user}`);
         
         let records=[];
         onValue(dbRef,  (snapshot) => {
@@ -75,12 +82,7 @@ const Year2 = () => {
        
 
 
-        const accessToken = userAccessToken()
-    if (!accessToken) return router.push('/')
-    const [userInfo] = fetchUser()
-
-    setUser(userInfo.uid)
-    console.log(userInfo.uid)
+       
        
         
       })
@@ -91,20 +93,25 @@ const Year2 = () => {
       const startYear=(event)=>
       {
         event.preventDefault()
+        if(!sy)
+        {
+          setSy(true);
+          setAllValues((prevalue) => {
+            return {
+              ...prevalue,                
+              
+              A:A_,
+              B:B_,
+              C:C_,
+              D:D_,
+              hold:H_
+    
+            }
+          })
+          setHolding(H_)
+
+        }
         
-        setAllValues((prevalue) => {
-          return {
-            ...prevalue,                
-            
-            A:A_,
-            B:B_,
-            C:C_,
-            D:D_,
-            hold:H_
-  
-          }
-        })
-        setHolding(H_)
       }
     
   
