@@ -1,167 +1,119 @@
-import { ref, serverTimestamp, set, update } from 'firebase/database'
-import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import { fetchUser,userAccessToken } from './fetchDetails'
-import { app,db} from './firebase_data';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { ref, serverTimestamp, set } from "firebase/database";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { app, db } from "./firebase_data";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { SHA256 } from "crypto-js";
+
 const Register = () => {
-  const auth = getAuth(app)
-  const [user, setUser] = useState(null)
-  const router = useRouter()
-  useEffect(() => {
-   
-  }, [])
-  const uid = user
-  const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [phoneNo, setPhoneNo] = useState('')
-    const [roll, setRoll] = useState('')
-  
+  const auth = getAuth(app);
+  const [user, setUser] = useState(null);
+  const router = useRouter();
+  useEffect(() => {}, []);
+  const uid = user;
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [roll, setRoll] = useState("");
 
-    const[password,setPassword]=useState('')
-    const handleSubmit = async (e) => {
-    
-      e.preventDefault()
-      try {
-        const res = await createUserWithEmailAndPassword(auth, email, password);
-        const user = res.user;
-        console.log("user",res.UserCredentialImpl)
-        let encryption = SHA256(password).toString();
-        const postListRef = ref(db, 'users/' + res.user.uid)
-        set(postListRef, {
-          name,
-          email,
-          phoneNo,
-          roll,
-          Aeval:500,
-          Beval:500,
-          Ceval:500,
-          Deval:500,
-          total_amount:2000,
+  const [password, setPassword] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      const user = res.user;
+      console.log("user", res.UserCredentialImpl);
+      let encryption = SHA256(password).toString();
+      const postListRef = ref(db, "users/" + res.user.uid);
+      set(postListRef, {
+        name,
+        email,
+        phoneNo,
+        roll,
+        Aeval: 500,
+        Beval: 500,
+        Ceval: 500,
+        Deval: 500,
+        total_amount: 2000,
 
-          password:encryption,
-          timestamp:serverTimestamp(),
-          y1:false,
-          y2:false,
-          y3:false,
-          y4:false,
-          y5:false
-        })
-        router.replace('/')
-        
-       
-      } catch (err) {
-        alert(err)
-      }
+        password: encryption,
+        timestamp: serverTimestamp(),
+        y1: false,
+        y2: false,
+        y3: false,
+        y4: false,
+        y5: false,
+      });
+      router.replace("/");
+    } catch (err) {
+      alert(err);
     }
+  };
 
   return (
-    <div>
-      <div >
-          <div className='mt-4'></div>
+    <div className="min-h-screen min-w-full bg-slate-200 ">
+      <div className="container mx-auto min-h-screen flex flex-col justify-center max-w-xl">
+        <h1 className="text-6xl font-bold text-center my-4 uppercase">
+          Portfolio Ventures
+        </h1>
+        <h2 className="text-lg font-light text-center my-4 text-slate-600">
+          Register here
+        </h2>
 
-          <form onSubmit={handleSubmit} >
-            <div >REGISTRATION</div>
-          <div className='ml-5 sm:ml-20 mb-2'>
-              <label
-                htmlFor='name'
-                >
-                Name
-              </label>
-              <input
-                required
-                type='text'
-                id='name'
-                name='name'
-                onChange={(e) => setName(e.target.value.toUpperCase())}
-                value={name}
-                  placeholder='Enter Name'
-              />
-            </div>
-            <div className='ml-5 sm:ml-20 mb-2'>
-              <label
-                htmlFor='email'
-                  >
-                Email
-              </label>
-              <input
-                required
-                type='email'
-                id='email'
-                name='email'
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                placeholder='Enter Email'
-              />
-            </div>
-            <div className='ml-5 sm:ml-20 mb-2'>
-              <label
-                htmlFor='phone'
-                     >
-                Phone_no
-              </label>
+        <div className="flex flex-col gap-4">
+          <input
+            type="text"
+            className="rounded-lg border-transparent appearance-none border border-gray-300 w-xl py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            placeholder="Name"
+            onChange={(e) => setName(e.target.value)}
+            required={true}
+          />
 
-              <input
-                required
-                type='tel'
-                pattern="[0-9]{10}"
-                name='phoneNo'
-               onChange={(e) => setPhoneNo(e.target.value.toUpperCase())}
-                value={phoneNo}
-                id='phone'
-                placeholder='Enter phoneNo'
-              />
-            </div>
-            <div className='ml-5 sm:ml-20 mb-2'>
-              <label
-                htmlFor='roll'
-                     >
-                ROLL_NO
-              </label>
+          <input
+            type="text"
+            className="rounded-lg border-transparent appearance-none border border-gray-300 w-xl py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            placeholder="Roll Number"
+            onChange={(e) => setRoll(e.target.value)}
+            required={true}
+          />
 
-              <input
-                required
-                type='text'
-                
-                name='roll'
-               onChange={(e) => setRoll(e.target.value.toUpperCase())}
-                value={roll}
-                id='roll'
-                placeholder='Enter rollNo'
-              />
-            </div>
-            <div >
-              <label
-                htmlFor='password'
-                  >
-                Password
-              </label>
+          <input
+            type="tel"
+            className="rounded-lg border-transparent appearance-none border border-gray-300 w-xl py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            placeholder="Phone Number"
+            onChange={(e) => setPhoneNo(e.target.value)}
+            required={true}
+          />
 
-              <input
-                required
-                type='password'
-                name='password'
-               id='password'
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                placeholder='Enter password'
-              />
-            </div>
+          <hr />
 
-            <div >
-              <button
-                type='submit'
-                
-              >
-                DONE
-              </button>
-            </div>
-           
-          </form>
+          <input
+            type="email"
+            className="rounded-lg border-transparent appearance-none border border-gray-300 w-xl py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            placeholder="Email ID"
+            onChange={(e) => setEmail(e.target.value)}
+            required={true}
+          />
+
+          <input
+            type="password"
+            className="rounded-lg border-transparent appearance-none border border-gray-300 w-xl py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+            required={true}
+          />
+
+          <button
+            type="button"
+            className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+            onClick={handleSubmit}
+          >
+            Register
+          </button>
         </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;
