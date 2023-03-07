@@ -41,7 +41,7 @@ const Year4 = () => {
   
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 7, 2023 20:51:00 GMT+0530"
+        "Mar 7, 2023 22:08:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
@@ -174,7 +174,7 @@ const Year4 = () => {
               Deval,
               total_amount: esum,
               timestamp: serverTimestamp(),
-              y1: true,
+              y4: true,
             },
             uid
           );

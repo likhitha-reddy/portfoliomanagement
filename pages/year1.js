@@ -41,7 +41,7 @@ const Year1 = () => {
   
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 7, 2023 20:45:00 GMT+0530"
+        "Mar 7, 2023 22:02:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
