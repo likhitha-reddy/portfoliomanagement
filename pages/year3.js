@@ -26,7 +26,7 @@ const Year3 = () => {
   const [B__, setB__] = useState(0);
   const [C__, setC__] = useState(0);
   const [D__, setD__] = useState(0);
-  const [y3_, setY3_] = useState(false);
+  const [y1_, setY1_] = useState(false);
 
   let [inc, setInc] = useState({
     A: 5,
@@ -37,22 +37,19 @@ const Year3 = () => {
   const [user, setUser] = useState(null);
   useEffect(() => {
     const userInfo = fetchUser();
-
     setUser(userInfo);
-    console.log("id", userInfo);
-
+  
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 7, 2023 14:30:00 GMT+0530"
+        "Mar 7, 2023 20:04:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
-        router.replace("year4");
+        router.push("year4");
       }
     }, 1000);
 
     const dbRef = ref(db, `users/${user}`);
-
     let records = [];
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
@@ -63,8 +60,8 @@ const Year3 = () => {
       setB_(records[1]);
       setC_(records[2]);
       setD_(records[3]);
-      setY3_(records[13]);
-      console.log("at start hold is", user);
+      setY1_(records[11]);
+
     });
   });
 
@@ -90,8 +87,6 @@ const Year3 = () => {
       setC__(C_);
       setD__(D_);
       setHolding(H_);
-
-      setHolding(H_);
     }
   };
 
@@ -108,7 +103,7 @@ const Year3 = () => {
           [name]: value,
         };
       });
-      console.log("changed values", allValues);
+   
     } else {
       alert("data submitted already");
     }
@@ -116,25 +111,19 @@ const Year3 = () => {
 
   const handleCheck = (event) => {
     event.preventDefault();
-    if (!y3_) {
+    if (!y1_) {
       let name = event.target.name;
       let value = event.target.value;
-      let Aeval = (allValues.A * (100 + inc.A)) / 100;
-      let Beval = (allValues.B * (100 + inc.B)) / 100;
-      let Ceval = (allValues.C * (100 + inc.C)) / 100;
-      let Deval = (allValues.D * (100 + inc.D)) / 100;
+      let Aeval = Math.round(((allValues.A * (100 + inc.A)) / 100) * 100) / 100;
+      let Beval = Math.round(((allValues.B* (100 + inc.B)) / 100) * 100) / 100;
+      let Ceval = Math.round(((allValues.C * (100 + inc.C)) / 100) * 100) / 100;
+      let Deval = Math.round(((allValues.D * (100 + inc.D)) / 100) * 100) / 100;
       let sum =
         parseFloat(allValues.A) +
         parseFloat(allValues.B) +
         parseFloat(allValues.C) +
         parseFloat(allValues.D);
-      console.log("A is", parseInt(allValues.A));
-      console.log("B is", parseInt(allValues.B));
-      console.log("C is", parseInt(allValues.C));
-      console.log("D is", parseInt(allValues.D));
-      console.log("sum is", sum);
-      console.log("holding is", holding);
-      console.log("uid ", uid);
+    
       if (sum > holding) {
         alert(
           "your invested amount is greaterthan your holding not possible please reassign"
@@ -164,9 +153,7 @@ const Year3 = () => {
             [name]: value,
           };
         });
-
-        let esum = Aeval + Beval + Ceval + Deval;
-
+        let esum=Math.round((Aeval+Beval+Ceval+Deval) * 100) / 100;
         try {
           const postListRef2 = ref(db, "users/" + uid + "/year3");
           set(postListRef2, {
@@ -185,15 +172,15 @@ const Year3 = () => {
               Beval,
               Ceval,
               Deval,
-              y3: true,
               total_amount: esum,
               timestamp: serverTimestamp(),
+              y1: true,
             },
             uid
           );
 
           setIssub(true);
-          setY3_(true);
+          setY1_(true);
         } catch (err) {
           alert(err);
         }
@@ -207,6 +194,11 @@ const Year3 = () => {
             C: Ceval,
             D: Deval,
           };
+        });
+
+        const inputs = document.getElementsByTagName("input['text']");
+        Array.from(inputs).forEach((input) => {
+          input.readOnly = true;
         });
       }
     }
@@ -319,3 +311,50 @@ const Year3 = () => {
 };
 
 export default Year3;
+
+/*
+<div>
+      <h1>YEAR 1</h1>
+      <h1>AMOUNT AT THE START OF THIS YEAR-{allValues.hold}</h1>
+      <form>
+        <div>
+          <input
+            type="text"
+            placeholder="Enter the value for ASSET A"
+            onChange={handleChange}
+            name="A"
+          />
+          <h1>ASSET A: {A__}</h1>
+          <br />
+          <input
+            type="text"
+            placeholder="Enter the value for ASSET B"
+            onChange={handleChange}
+            name="B"
+          />
+          <h1>ASSET B: {B__}</h1>
+          <br />
+          <input
+            type="text"
+            placeholder="Enter the value for ASSET C"
+            onChange={handleChange}
+            name="C"
+          />
+          <h1>ASSET C: {C__}</h1>
+          <br />
+          <input
+            type="text"
+            placeholder="Enter the value for ASSET D"
+            onChange={handleChange}
+            name="D"
+          />
+          <h1>ASSET D:   </h1>
+          <br />
+        </div>
+        <h1>
+          <button onClick={handleCheck}>SUBMIT</button>
+          <button onClick={startYear}>Start year</button>
+        </h1>
+      </form>
+    </div>
+ */

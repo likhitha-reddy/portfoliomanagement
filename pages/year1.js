@@ -38,14 +38,14 @@ const Year1 = () => {
   useEffect(() => {
     const userInfo = fetchUser();
     setUser(userInfo);
-    console.log("id", userInfo);
+  
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 7, 2023 14:20:00 GMT+0530"
+        "Mar 7, 2023 20:00:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
-        router.replace("year2");
+        router.push("year2");
       }
     }, 1000);
 
@@ -61,7 +61,7 @@ const Year1 = () => {
       setC_(records[2]);
       setD_(records[3]);
       setY1_(records[11]);
-      console.log("at start hold is", user);
+
     });
   });
 
@@ -103,7 +103,7 @@ const Year1 = () => {
           [name]: value,
         };
       });
-      console.log("changed values", allValues);
+   
     } else {
       alert("data submitted already");
     }
@@ -114,22 +114,16 @@ const Year1 = () => {
     if (!y1_) {
       let name = event.target.name;
       let value = event.target.value;
-      let Aeval = (allValues.A * (100 + inc.A)) / 100;
-      let Beval = (allValues.B * (100 + inc.B)) / 100;
-      let Ceval = (allValues.C * (100 + inc.C)) / 100;
-      let Deval = (allValues.D * (100 + inc.D)) / 100;
+      let Aeval = Math.round(((allValues.A * (100 + inc.A)) / 100) * 100) / 100;
+      let Beval = Math.round(((allValues.B* (100 + inc.B)) / 100) * 100) / 100;
+      let Ceval = Math.round(((allValues.C * (100 + inc.C)) / 100) * 100) / 100;
+      let Deval = Math.round(((allValues.D * (100 + inc.D)) / 100) * 100) / 100;
       let sum =
         parseFloat(allValues.A) +
         parseFloat(allValues.B) +
         parseFloat(allValues.C) +
         parseFloat(allValues.D);
-      console.log("A is", parseInt(allValues.A));
-      console.log("B is", parseInt(allValues.B));
-      console.log("C is", parseInt(allValues.C));
-      console.log("D is", parseInt(allValues.D));
-      console.log("sum is", sum);
-      console.log("holding is", holding);
-      console.log("uid ", uid);
+    
       if (sum > holding) {
         alert(
           "your invested amount is greaterthan your holding not possible please reassign"
