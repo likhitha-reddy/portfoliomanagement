@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { db } from "./firebase_data";
 import { fetchUser } from "./fetchDetails";
 import { onValue, ref, serverTimestamp, set, update } from "firebase/database";
-
+import data from './values.json'
 const Year3 = () => {
   const router = useRouter();
   const [holding, setHolding] = useState(0);
@@ -29,27 +29,32 @@ const Year3 = () => {
   const [y3_, setY3_] = useState(false);
 
   let [inc, setInc] = useState({
-    A: 5,
-    B: -6,
-    C: 9,
-    D: 10,
+    A: data[2].A,
+    B: data[2].B,
+    C: data[2].C,
+    D: data[2].D,
   });
   const [user, setUser] = useState(null);
   useEffect(() => {
     const userInfo = fetchUser();
+
+
     setUser(userInfo);
-  
+     if( localStorage.getItem('accessToken') !== null)
+    {
+
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 7, 2023 22:06:00 GMT+0530"
+        "Mar 8, 2023 23:04:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
-        router.push("year4");
+        router.replace("year4");
       }
     }, 1000);
 
     const dbRef = ref(db, `users/${user}`);
+
     let records = [];
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
@@ -60,9 +65,14 @@ const Year3 = () => {
       setB_(records[1]);
       setC_(records[2]);
       setD_(records[3]);
-      setY3_(records[11]);
-
+      setY3_(records[13]);
+      
     });
+  }
+    else
+  {
+    router.push('/');
+  }
   });
 
   const uid = user;
@@ -87,6 +97,8 @@ const Year3 = () => {
       setC__(C_);
       setD__(D_);
       setHolding(H_);
+
+      setHolding(H_);
     }
   };
 
@@ -103,11 +115,17 @@ const Year3 = () => {
           [name]: value,
         };
       });
-   
+      
     } else {
       alert("data submitted already");
     }
   };
+  const reload = (event) => {
+    event.preventDefault();
+
+    router.push('Firstpage');
+  };
+
 
   const handleCheck = (event) => {
     event.preventDefault();
@@ -123,7 +141,7 @@ const Year3 = () => {
         parseFloat(allValues.B) +
         parseFloat(allValues.C) +
         parseFloat(allValues.D);
-    
+     
       if (sum > holding) {
         alert(
           "your invested amount is greaterthan your holding not possible please reassign"
@@ -153,7 +171,9 @@ const Year3 = () => {
             [name]: value,
           };
         });
+
         let esum=Math.round((Aeval+Beval+Ceval+Deval) * 100) / 100;
+
         try {
           const postListRef2 = ref(db, "users/" + uid + "/year3");
           set(postListRef2, {
@@ -172,9 +192,9 @@ const Year3 = () => {
               Beval,
               Ceval,
               Deval,
+              y3: true,
               total_amount: esum,
               timestamp: serverTimestamp(),
-              y3: true,
             },
             uid
           );
@@ -194,11 +214,6 @@ const Year3 = () => {
             C: Ceval,
             D: Deval,
           };
-        });
-
-        const inputs = document.getElementsByTagName("input['text']");
-        Array.from(inputs).forEach((input) => {
-          input.readOnly = true;
         });
       }
     }
@@ -223,6 +238,12 @@ const Year3 = () => {
         <p className="text-lg font-light text-center my-1 text-slate-600">
           Divide your capital among the 4 asset classes
         </p>
+        <button
+          onClick={reload}
+          className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
+        >
+         RELOAD
+        </button>
         <button
           onClick={startYear}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
@@ -311,50 +332,3 @@ const Year3 = () => {
 };
 
 export default Year3;
-
-/*
-<div>
-      <h1>YEAR 1</h1>
-      <h1>AMOUNT AT THE START OF THIS YEAR-{allValues.hold}</h1>
-      <form>
-        <div>
-          <input
-            type="text"
-            placeholder="Enter the value for ASSET A"
-            onChange={handleChange}
-            name="A"
-          />
-          <h1>ASSET A: {A__}</h1>
-          <br />
-          <input
-            type="text"
-            placeholder="Enter the value for ASSET B"
-            onChange={handleChange}
-            name="B"
-          />
-          <h1>ASSET B: {B__}</h1>
-          <br />
-          <input
-            type="text"
-            placeholder="Enter the value for ASSET C"
-            onChange={handleChange}
-            name="C"
-          />
-          <h1>ASSET C: {C__}</h1>
-          <br />
-          <input
-            type="text"
-            placeholder="Enter the value for ASSET D"
-            onChange={handleChange}
-            name="D"
-          />
-          <h1>ASSET D:   </h1>
-          <br />
-        </div>
-        <h1>
-          <button onClick={handleCheck}>SUBMIT</button>
-          <button onClick={startYear}>Start year</button>
-        </h1>
-      </form>
-    </div>
- */

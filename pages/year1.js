@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { db } from "./firebase_data";
 import { fetchUser } from "./fetchDetails";
 import { onValue, ref, serverTimestamp, set, update } from "firebase/database";
-
+import data from './values.json'
 const Year1 = () => {
   const router = useRouter();
   const [holding, setHolding] = useState(0);
@@ -29,23 +29,27 @@ const Year1 = () => {
   const [y1_, setY1_] = useState(false);
 
   let [inc, setInc] = useState({
-    A: 5,
-    B: -6,
-    C: 9,
-    D: 10,
+    A: data[0].A,
+    B: data[0].B,
+    C: data[0].C,
+    D: data[0].D,
   });
   const [user, setUser] = useState(null);
   useEffect(() => {
+    if( localStorage.getItem('accessToken') !== null)
+    {
+      
+    
     const userInfo = fetchUser();
     setUser(userInfo);
-  
+    
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 7, 2023 22:02:00 GMT+0530"
+        "Mar 7, 2023 23:33:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
-        router.push("year2");
+        router.replace("year2");
       }
     }, 1000);
 
@@ -61,8 +65,15 @@ const Year1 = () => {
       setC_(records[2]);
       setD_(records[3]);
       setY1_(records[11]);
-
+     
     });
+
+
+  }
+  else
+  {
+    router.push('/');
+  }
   });
 
   const uid = user;
@@ -103,10 +114,17 @@ const Year1 = () => {
           [name]: value,
         };
       });
-   
+     
     } else {
       alert("data submitted already");
     }
+  };
+
+
+  const reload = (event) => {
+    event.preventDefault();
+
+    router.push('Firstpage');
   };
 
   const handleCheck = (event) => {
@@ -229,6 +247,12 @@ const Year1 = () => {
         >
           Start year
         </button>
+        <button
+          onClick={reload}
+          className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
+        >
+         RELOAD
+        </button>
         <div className="flex flex-col gap-3">
           <div className="flex flex-row justify-center gap-3">
             <div className="flex flex-col bg-white items-center font-bold text-lg px-4 py-8 rounded-lg shadow-md gap-3">
@@ -312,3 +336,49 @@ const Year1 = () => {
 
 export default Year1;
 
+/*
+<div>
+      <h1>YEAR 1</h1>
+      <h1>AMOUNT AT THE START OF THIS YEAR-{allValues.hold}</h1>
+      <form>
+        <div>
+          <input
+            type="text"
+            placeholder="Enter the value for ASSET A"
+            onChange={handleChange}
+            name="A"
+          />
+          <h1>ASSET A: {A__}</h1>
+          <br />
+          <input
+            type="text"
+            placeholder="Enter the value for ASSET B"
+            onChange={handleChange}
+            name="B"
+          />
+          <h1>ASSET B: {B__}</h1>
+          <br />
+          <input
+            type="text"
+            placeholder="Enter the value for ASSET C"
+            onChange={handleChange}
+            name="C"
+          />
+          <h1>ASSET C: {C__}</h1>
+          <br />
+          <input
+            type="text"
+            placeholder="Enter the value for ASSET D"
+            onChange={handleChange}
+            name="D"
+          />
+          <h1>ASSET D:   </h1>
+          <br />
+        </div>
+        <h1>
+          <button onClick={handleCheck}>SUBMIT</button>
+          <button onClick={startYear}>Start year</button>
+        </h1>
+      </form>
+    </div>
+ */

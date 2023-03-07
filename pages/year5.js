@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { db } from "./firebase_data";
 import { fetchUser } from "./fetchDetails";
 import { onValue, ref, serverTimestamp, set, update } from "firebase/database";
-
+import data from './values.json'
 const Year5 = () => {
   const router = useRouter();
   const [holding, setHolding] = useState(0);
@@ -21,35 +21,40 @@ const Year5 = () => {
   const [C_, setC_] = useState(0);
   const [D_, setD_] = useState(0);
   const [H_, setH_] = useState(0);
+
   const [sy, setSy] = useState(false);
+
   const [A__, setA__] = useState(0);
   const [B__, setB__] = useState(0);
   const [C__, setC__] = useState(0);
   const [D__, setD__] = useState(0);
-  const [y5_, setY5_] = useState(false);
 
   let [inc, setInc] = useState({
-    A: 5,
-    B: -6,
-    C: 9,
-    D: 10,
+    A: data[4].A,
+    B: data[4].B,
+    C: data[4].C,
+    D: data[4].D,
   });
   const [user, setUser] = useState(null);
   useEffect(() => {
     const userInfo = fetchUser();
+
     setUser(userInfo);
-  
+    if( localStorage.getItem('accessToken') !== null)
+    {
+
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 7, 2023 22:10:00 GMT+0530"
+        "Mar 8, 2023 23:08:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
-        router.push("thankyou");
+        router.replace("thankyou");
       }
     }, 1000);
 
     const dbRef = ref(db, `users/${user}`);
+
     let records = [];
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
@@ -60,9 +65,13 @@ const Year5 = () => {
       setB_(records[1]);
       setC_(records[2]);
       setD_(records[3]);
-      setY5_(records[11]);
-
+      
     });
+  }
+    else
+  {
+    router.push('/');
+  }
   });
 
   const uid = user;
@@ -103,15 +112,21 @@ const Year5 = () => {
           [name]: value,
         };
       });
-   
+  
     } else {
       alert("data submitted already");
     }
   };
+  const reload = (event) => {
+    event.preventDefault();
+
+    router.push('Firstpage');
+  };
+
 
   const handleCheck = (event) => {
     event.preventDefault();
-    if (!y5_) {
+    if (!issub) {
       let name = event.target.name;
       let value = event.target.value;
       let Aeval = Math.round(((allValues.A * (100 + inc.A)) / 100) * 100) / 100;
@@ -123,7 +138,7 @@ const Year5 = () => {
         parseFloat(allValues.B) +
         parseFloat(allValues.C) +
         parseFloat(allValues.D);
-    
+     
       if (sum > holding) {
         alert(
           "your invested amount is greaterthan your holding not possible please reassign"
@@ -153,7 +168,9 @@ const Year5 = () => {
             [name]: value,
           };
         });
+
         let esum=Math.round((Aeval+Beval+Ceval+Deval) * 100) / 100;
+
         try {
           const postListRef2 = ref(db, "users/" + uid + "/year5");
           set(postListRef2, {
@@ -172,15 +189,14 @@ const Year5 = () => {
               Beval,
               Ceval,
               Deval,
+              y5: true,
               total_amount: esum,
               timestamp: serverTimestamp(),
-              y5: true,
             },
             uid
           );
 
           setIssub(true);
-          setY5_(true);
         } catch (err) {
           alert(err);
         }
@@ -194,11 +210,6 @@ const Year5 = () => {
             C: Ceval,
             D: Deval,
           };
-        });
-
-        const inputs = document.getElementsByTagName("input['text']");
-        Array.from(inputs).forEach((input) => {
-          input.readOnly = true;
         });
       }
     }
@@ -223,6 +234,12 @@ const Year5 = () => {
         <p className="text-lg font-light text-center my-1 text-slate-600">
           Divide your capital among the 4 asset classes
         </p>
+        <button
+          onClick={reload}
+          className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
+        >
+         RELOAD
+        </button>
         <button
           onClick={startYear}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
@@ -311,50 +328,3 @@ const Year5 = () => {
 };
 
 export default Year5;
-
-/*
-<div>
-      <h1>YEAR 1</h1>
-      <h1>AMOUNT AT THE START OF THIS YEAR-{allValues.hold}</h1>
-      <form>
-        <div>
-          <input
-            type="text"
-            placeholder="Enter the value for ASSET A"
-            onChange={handleChange}
-            name="A"
-          />
-          <h1>ASSET A: {A__}</h1>
-          <br />
-          <input
-            type="text"
-            placeholder="Enter the value for ASSET B"
-            onChange={handleChange}
-            name="B"
-          />
-          <h1>ASSET B: {B__}</h1>
-          <br />
-          <input
-            type="text"
-            placeholder="Enter the value for ASSET C"
-            onChange={handleChange}
-            name="C"
-          />
-          <h1>ASSET C: {C__}</h1>
-          <br />
-          <input
-            type="text"
-            placeholder="Enter the value for ASSET D"
-            onChange={handleChange}
-            name="D"
-          />
-          <h1>ASSET D:   </h1>
-          <br />
-        </div>
-        <h1>
-          <button onClick={handleCheck}>SUBMIT</button>
-          <button onClick={startYear}>Start year</button>
-        </h1>
-      </form>
-    </div>
- */

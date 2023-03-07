@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
+import { userAccessToken } from "./fetchDetails";
 import Year1 from "./year1";
 import Year2 from "./year2";
 import Year3 from "./year3";
@@ -17,11 +18,12 @@ const Firstpage = () => {
   let interval = useRef();
   const [text, setText] = useState("");
   const startTimer = () => {
-    const countdownDate1 = new Date('Mar 7, 2023 22:02:08 GMT+0530').getTime()
-    const countdownDate2 = new Date('Mar 7, 2023 22:04:00 GMT+0530').getTime()
-    const countdownDate3 = new Date('Mar 7, 2023 22:06:00 GMT+0530').getTime()
-    const countdownDate4 = new Date('Mar 7, 2023 22:08:00 GMT+0530').getTime()
-    const countdownDate5 = new Date('Mar 7, 2023 22:10:00 GMT+0530').getTime()
+    const countdownDate1 = new Date("Mar 7, 2023 23:50:00 GMT+0530").getTime();
+    const countdownDate2 = new Date("Mar 8, 2023 23:02:00 GMT+0530").getTime();
+    const countdownDate3 = new Date("Mar 8, 2023 23:04:00 GMT+0530").getTime();
+    const countdownDate4 = new Date("Mar 8, 2023 23:06:00 GMT+0530").getTime();
+    const countdownDate5 = new Date("Mar 8, 2023 23:08:00 GMT+0530").getTime();
+
     let now = new Date().getTime();
     distance1 = Math.floor(((countdownDate1 - now) % (1000 * 60)) / 1000);
     distance2 = Math.floor(((countdownDate2 - now) % (1000 * 60)) / 1000);
@@ -53,22 +55,21 @@ const Firstpage = () => {
       : router.replace("/thankyou");
   };
   useEffect(() => {
-    startTimer();
+    if( localStorage.getItem('accessToken') !== null)
+    {
+      startTimer();
+    
+    }
+    else
+    {
+      router.push('/');
+    }
+   
   });
 
   return (
     <div>
-      {distance1 > 0 ? (
-        <Year1 />
-      ) : distance2 > 0 ? (
-        <Year2 />
-      ) : distance3 > 0 ? (
-        <Year3 />
-      ) : distance4 > 0 ? (
-        <Year4 />
-      ) : (
-        <Year5 />
-      )}
+     
     </div>
   );
 };
