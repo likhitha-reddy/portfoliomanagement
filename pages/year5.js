@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { db } from './firebase_data'
 import { fetchUser, userAccessToken } from './fetchDetails'
-import { onValue, ref, serverTimestamp, update } from 'firebase/database'
+import { onValue, ref, serverTimestamp, set, update } from 'firebase/database'
 const Year5 = () => {
   const router=useRouter()
     const [holding,setHolding]=useState(0)
@@ -22,7 +22,14 @@ const Year5 = () => {
         const [C_,setC_]=useState(0)
         const [D_,setD_]=useState(0)
         const [H_,setH_]=useState(0)
+
         const [sy,setSy]=useState(false)
+
+        const [A__,setA__]=useState(0)
+        const [B__,setB__]=useState(0)
+        const [C__,setC__]=useState(0)
+        const [D__,setD__]=useState(0)
+        
       
        
      
@@ -44,7 +51,7 @@ const Year5 = () => {
         
          setInterval(() =>
         {
-          const countdownDate1 = new Date('Mar 3, 2023 23:29:00 GMT+0530').getTime()
+          const countdownDate1 = new Date('Mar 7, 2023 07:47:00 GMT+0530').getTime()
           let now = new Date().getTime()
           if(now>=countdownDate1)
           {
@@ -68,23 +75,11 @@ const Year5 = () => {
         setB_(records[1])
         setC_(records[2])
         setD_(records[3])
-        
-        
-        
-       
-        
+        console.log("at start hold is",user);
         
 
         })
 
-
-       
-       
-
-
-       
-       
-        
       })
       
       
@@ -105,9 +100,14 @@ const Year5 = () => {
               C:C_,
               D:D_,
               hold:H_
+
     
             }
           })
+          setA__(A_);
+          setB__(B_)
+          setC__(C_)
+          setD__(D_)
           setHolding(H_)
 
         }
@@ -149,7 +149,9 @@ const Year5 = () => {
        
         const handleCheck = (event) => {
           event.preventDefault()
-        
+              if(!issub)
+              {
+              
             let name = event.target.name;
             let value = event.target.value;
             let Aeval=allValues.A*(100+inc.A)/100
@@ -200,6 +202,15 @@ const Year5 = () => {
               let esum=Aeval+Beval+Ceval+Deval
               
              try {
+              const postListRef2 = ref(db, 'users/' + uid+'/year5')
+              set(postListRef2, {
+                Aeval,
+                  Beval,
+                  Ceval,
+                  Deval,
+                  total_amount:esum,
+                  timestamp:serverTimestamp()
+              })
               const postListRef = ref(db, 'users/' + uid)
               update(
                 postListRef,
@@ -208,12 +219,14 @@ const Year5 = () => {
                   Beval,
                   Ceval,
                   Deval,
+                  y5:true,
                   total_amount:esum,
                   timestamp:serverTimestamp()
                   
                 },
                 uid
               );
+             
               setIssub(true)              
               
             } catch (err) {
@@ -235,7 +248,7 @@ const Year5 = () => {
                    
                 
             }
-    
+          }
             }
             
       
@@ -248,19 +261,19 @@ const Year5 = () => {
           
           <input type='text' placeholder='Enter the value for ASSET A' 
             onChange={handleChange} name='A' />
-            <h1>ASSET A: {A_}</h1>
+            <h1>ASSET A: {A__}</h1>
             <br/>
           <input type='text' placeholder='Enter the value for ASSET B'
             onChange={handleChange} name='B' />
-             <h1>ASSET B: {B_}</h1>
+             <h1>ASSET B: {B__}</h1>
             <br/>
           <input type='text' placeholder='Enter the value for ASSET C' 
             onChange={handleChange} name='C' />
-             <h1>ASSET C: {C_}</h1>
+             <h1>ASSET C: {C__}</h1>
             <br/>
          <input type='text' placeholder='Enter the value for ASSET D' 
             onChange={handleChange} name='D' />
-             <h1>ASSET D: {D_}</h1>
+             <h1>ASSET D: {D__}</h1>
             <br/>
         </div>
         <h1>

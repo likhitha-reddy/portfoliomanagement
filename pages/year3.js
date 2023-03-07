@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { db } from './firebase_data'
 import { fetchUser, userAccessToken } from './fetchDetails'
-import { onValue, ref, serverTimestamp, update } from 'firebase/database'
+import { onValue, ref, serverTimestamp, set, update } from 'firebase/database'
 const Year3 = () => {
   const router=useRouter()
     const [holding,setHolding]=useState(0)
@@ -23,8 +23,11 @@ const Year3 = () => {
         const [D_,setD_]=useState(0)
         const [H_,setH_]=useState(0)
         const [sy,setSy]=useState(false)
-      
-       
+        const [A__,setA__]=useState(0)
+        const [B__,setB__]=useState(0)
+        const [C__,setC__]=useState(0)
+        const [D__,setD__]=useState(0)
+        const[y3_,setY3_]=useState(false)
      
 
       let [inc, setInc] = useState({
@@ -44,7 +47,7 @@ const Year3 = () => {
         
          setInterval(() =>
         {
-          const countdownDate1 = new Date('Mar 3, 2023 23:27:00 GMT+0530').getTime()
+          const countdownDate1 = new Date('Mar 7, 2023 07:43:00 GMT+0530').getTime()
           let now = new Date().getTime()
           if(now>=countdownDate1)
           {
@@ -68,23 +71,9 @@ const Year3 = () => {
         setB_(records[1])
         setC_(records[2])
         setD_(records[3])
-        
-        
-        
-       
-        
-        
-
+        setY3_(records[13])
+        console.log("at start hold is",user);
         })
-
-
-       
-       
-
-
-       
-       
-        
       })
       
       
@@ -105,9 +94,16 @@ const Year3 = () => {
               C:C_,
               D:D_,
               hold:H_
+
     
             }
           })
+          setA__(A_);
+          setB__(B_)
+          setC__(C_)
+          setD__(D_)
+          setHolding(H_)
+          
           setHolding(H_)
 
         }
@@ -149,7 +145,8 @@ const Year3 = () => {
        
         const handleCheck = (event) => {
           event.preventDefault()
-        
+           if(!y3_)
+           {
             let name = event.target.name;
             let value = event.target.value;
             let Aeval=allValues.A*(100+inc.A)/100
@@ -200,6 +197,15 @@ const Year3 = () => {
               let esum=Aeval+Beval+Ceval+Deval
               
              try {
+              const postListRef2 = ref(db, 'users/' + uid+'/year3')
+              set(postListRef2, {
+                Aeval,
+                  Beval,
+                  Ceval,
+                  Deval,
+                  total_amount:esum,
+                  timestamp:serverTimestamp()
+              })
               const postListRef = ref(db, 'users/' + uid)
               update(
                 postListRef,
@@ -208,13 +214,16 @@ const Year3 = () => {
                   Beval,
                   Ceval,
                   Deval,
+                  y3:true,
                   total_amount:esum,
                   timestamp:serverTimestamp()
                   
                 },
                 uid
               );
-              setIssub(true)              
+             
+              setIssub(true)    
+              setY3_(true)          
               
             } catch (err) {
               alert(err)
@@ -235,7 +244,7 @@ const Year3 = () => {
                    
                 
             }
-    
+          }
             }
             
       
@@ -248,19 +257,19 @@ const Year3 = () => {
           
           <input type='text' placeholder='Enter the value for ASSET A' 
             onChange={handleChange} name='A' />
-            <h1>ASSET A: {A_}</h1>
+            <h1>ASSET A: {A__}</h1>
             <br/>
           <input type='text' placeholder='Enter the value for ASSET B'
             onChange={handleChange} name='B' />
-             <h1>ASSET B: {B_}</h1>
+             <h1>ASSET B: {B__}</h1>
             <br/>
           <input type='text' placeholder='Enter the value for ASSET C' 
             onChange={handleChange} name='C' />
-             <h1>ASSET C: {C_}</h1>
+             <h1>ASSET C: {C__}</h1>
             <br/>
          <input type='text' placeholder='Enter the value for ASSET D' 
             onChange={handleChange} name='D' />
-             <h1>ASSET D: {D_}</h1>
+             <h1>ASSET D: {D__}</h1>
             <br/>
         </div>
         <h1>

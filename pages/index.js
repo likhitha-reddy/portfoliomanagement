@@ -49,28 +49,7 @@ export default function Home() {
   }
   
 
-  {/*
-  const signIn = async () => {
-    const { user } = await signInWithPopup(firebaseAuth, provider)
-    const { refreshToken, providerData } = user
-
-    localStorage.setItem('user', JSON.stringify(providerData))
-    localStorage.setItem('accessToken', JSON.stringify(refreshToken))
-    const [userInfo] = fetchUser()
-    const userId = userInfo.uid
-
-    const dbRef = ref(getDatabase(app))
-    get(child(dbRef, `users/${userId}`)).then((snapshot) => {
-      if (snapshot.exists() && snapshot.val().name) {
-        router.push('/Firstpage')
-      } else {
-        router.push('/register')
-      }
-    })
   
-  }
-*/}
-
   return (
     <>     
               <h1>

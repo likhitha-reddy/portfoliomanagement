@@ -41,9 +41,14 @@ const Register = () => {
           total_amount:2000,
 
           password:encryption,
-          timestamp:serverTimestamp()
+          timestamp:serverTimestamp(),
+          y1:false,
+          y2:false,
+          y3:false,
+          y4:false,
+          y5:false
         })
-        router.replace('Firstpage')
+        router.replace('/')
         
        
       } catch (err) {
