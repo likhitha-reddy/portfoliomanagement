@@ -26,7 +26,7 @@ const Year3 = () => {
   const [B__, setB__] = useState(0);
   const [C__, setC__] = useState(0);
   const [D__, setD__] = useState(0);
-  const [y1_, setY1_] = useState(false);
+  const [y3_, setY3_] = useState(false);
 
   let [inc, setInc] = useState({
     A: 5,
@@ -41,7 +41,7 @@ const Year3 = () => {
   
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 7, 2023 20:04:00 GMT+0530"
+        "Mar 7, 2023 20:49:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
@@ -60,7 +60,7 @@ const Year3 = () => {
       setB_(records[1]);
       setC_(records[2]);
       setD_(records[3]);
-      setY1_(records[11]);
+      setY3_(records[11]);
 
     });
   });
@@ -111,7 +111,7 @@ const Year3 = () => {
 
   const handleCheck = (event) => {
     event.preventDefault();
-    if (!y1_) {
+    if (!y3_) {
       let name = event.target.name;
       let value = event.target.value;
       let Aeval = Math.round(((allValues.A * (100 + inc.A)) / 100) * 100) / 100;
@@ -180,7 +180,7 @@ const Year3 = () => {
           );
 
           setIssub(true);
-          setY1_(true);
+          setY3_(true);
         } catch (err) {
           alert(err);
         }
