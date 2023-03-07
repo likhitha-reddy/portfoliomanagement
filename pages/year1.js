@@ -41,7 +41,7 @@ const Year1 = () => {
   
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 7, 2023 20:00:00 GMT+0530"
+        "Mar 7, 2023 20:20:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
@@ -153,7 +153,7 @@ const Year1 = () => {
             [name]: value,
           };
         });
-        let esum = Aeval + Beval + Ceval + Deval;
+        let esum=Math.round((Aeval+Beval+Ceval+Deval) * 100) / 100;
         try {
           const postListRef2 = ref(db, "users/" + uid + "/year1");
           set(postListRef2, {
@@ -312,49 +312,3 @@ const Year1 = () => {
 
 export default Year1;
 
-/*
-<div>
-      <h1>YEAR 1</h1>
-      <h1>AMOUNT AT THE START OF THIS YEAR-{allValues.hold}</h1>
-      <form>
-        <div>
-          <input
-            type="text"
-            placeholder="Enter the value for ASSET A"
-            onChange={handleChange}
-            name="A"
-          />
-          <h1>ASSET A: {A__}</h1>
-          <br />
-          <input
-            type="text"
-            placeholder="Enter the value for ASSET B"
-            onChange={handleChange}
-            name="B"
-          />
-          <h1>ASSET B: {B__}</h1>
-          <br />
-          <input
-            type="text"
-            placeholder="Enter the value for ASSET C"
-            onChange={handleChange}
-            name="C"
-          />
-          <h1>ASSET C: {C__}</h1>
-          <br />
-          <input
-            type="text"
-            placeholder="Enter the value for ASSET D"
-            onChange={handleChange}
-            name="D"
-          />
-          <h1>ASSET D:   </h1>
-          <br />
-        </div>
-        <h1>
-          <button onClick={handleCheck}>SUBMIT</button>
-          <button onClick={startYear}>Start year</button>
-        </h1>
-      </form>
-    </div>
- */
