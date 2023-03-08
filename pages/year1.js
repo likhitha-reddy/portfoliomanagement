@@ -45,7 +45,7 @@ const Year1 = () => {
     
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 7, 2023 23:33:00 GMT+0530"
+        "Mar 8, 2023 09:02:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
@@ -181,6 +181,7 @@ const Year1 = () => {
             Deval,
             total_amount: esum,
             timestamp: serverTimestamp(),
+            changeinthisyear:esum-allValues.hold,
           });
           const postListRef = ref(db, "users/" + uid);
           update(
@@ -193,6 +194,7 @@ const Year1 = () => {
               total_amount: esum,
               timestamp: serverTimestamp(),
               y1: true,
+              
             },
             uid
           );

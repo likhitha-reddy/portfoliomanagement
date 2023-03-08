@@ -18,11 +18,11 @@ const Firstpage = () => {
   let interval = useRef();
   const [text, setText] = useState("");
   const startTimer = () => {
-    const countdownDate1 = new Date("Mar 7, 2023 23:50:00 GMT+0530").getTime();
-    const countdownDate2 = new Date("Mar 8, 2023 23:02:00 GMT+0530").getTime();
-    const countdownDate3 = new Date("Mar 8, 2023 23:04:00 GMT+0530").getTime();
-    const countdownDate4 = new Date("Mar 8, 2023 23:06:00 GMT+0530").getTime();
-    const countdownDate5 = new Date("Mar 8, 2023 23:08:00 GMT+0530").getTime();
+    const countdownDate1 = new Date("Mar 8, 2023 09:02:00 GMT+0530").getTime();
+    const countdownDate2 = new Date("Mar 8, 2023 09:04:00 GMT+0530").getTime();
+    const countdownDate3 = new Date("Mar 8, 2023 09:06:00 GMT+0530").getTime();
+    const countdownDate4 = new Date("Mar 8, 2023 09:08:00 GMT+0530").getTime();
+    const countdownDate5 = new Date("Mar 8, 2023 09:10:00 GMT+0530").getTime();
 
     let now = new Date().getTime();
     distance1 = Math.floor(((countdownDate1 - now) % (1000 * 60)) / 1000);
