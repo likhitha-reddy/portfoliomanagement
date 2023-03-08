@@ -45,7 +45,7 @@ const Year1 = () => {
     
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 8, 2023 09:02:00 GMT+0530"
+        "Mar 8, 2023 15:00:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
@@ -243,17 +243,18 @@ const Year1 = () => {
         <p className="text-lg font-light text-center my-1 text-slate-600">
           Divide your capital among the 4 asset classes
         </p>
-        <button
-          onClick={startYear}
-          className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
-        >
-          Start year
-        </button>
+       
         <button
           onClick={reload}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
         >
          RELOAD
+        </button>
+        <button
+          onClick={startYear}
+          className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
+        >
+          Start year
         </button>
         <div className="flex flex-col gap-3">
           <div className="flex flex-row justify-center gap-3">

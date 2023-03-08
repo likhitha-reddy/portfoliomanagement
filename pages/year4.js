@@ -45,7 +45,7 @@ const Year4 = () => {
 
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 8, 2023 09:08:00 GMT+0530"
+        "Mar 8, 2023 15:06:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
@@ -257,6 +257,8 @@ const Year4 = () => {
               <p className="font-light text-sm text-center">
                 An equity investment is money that is invested in a company by
                 purchasing shares of that company in the stock market
+                <br/>
+              last year the growth rate of this asset was {data[2].A}%
               </p>
               <input
                 type="text"
@@ -273,6 +275,8 @@ const Year4 = () => {
                 A bond is a fixed-income investment that represents a loan made
                 by an investor to a borrower, ususally corporate or
                 governmental.
+                <br/>
+              last year the growth rate of this asset was {data[2].B}%
               </p>
               <input
                 type="text"
@@ -292,6 +296,8 @@ const Year4 = () => {
                 currency designed to work as a medium of exchange through a
                 computer network that is not reliant on any central authority,
                 such as a government or bank, to uphold or maintain it.
+                <br/>
+              last year the growth rate of this asset was {data[2].C}%
               </p>
               <input
                 type="text"
@@ -309,6 +315,8 @@ const Year4 = () => {
                 interchangeable with other goods of the same type. Commodities
                 are most often used as inputs in the production of other goods
                 or services.
+                <br/>
+              last year the growth rate of this asset was {data[2].D}%
               </p>
               <input
                 type="text"
