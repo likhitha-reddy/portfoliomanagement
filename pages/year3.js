@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { db } from "./firebase_data";
 import { fetchUser } from "./fetchDetails";
 import { onValue, ref, serverTimestamp, set, update } from "firebase/database";
-import data from './values.json'
+import data from "./values.json";
 const Year3 = () => {
   const router = useRouter();
   const [holding, setHolding] = useState(0);
@@ -38,41 +38,35 @@ const Year3 = () => {
   useEffect(() => {
     const userInfo = fetchUser();
 
-
     setUser(userInfo);
-     if( localStorage.getItem('accessToken') !== null)
-    {
+    if (localStorage.getItem("accessToken") !== null) {
+      setInterval(() => {
+        const countdownDate1 = new Date(
+          "Mar 10, 2023 00:30:00 GMT+0530"
+        ).getTime();
+        let now = new Date().getTime();
+        if (now >= countdownDate1) {
+          router.replace("year4");
+        }
+      }, 1000);
 
-    setInterval(() => {
-      const countdownDate1 = new Date(
-        "Mar 8, 2023 15:04:00 GMT+0530"
-      ).getTime();
-      let now = new Date().getTime();
-      if (now >= countdownDate1) {
-        router.replace("year4");
-      }
-    }, 1000);
+      const dbRef = ref(db, `users/${user}`);
 
-    const dbRef = ref(db, `users/${user}`);
-
-    let records = [];
-    onValue(dbRef, (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        records.push(childSnapshot.val());
+      let records = [];
+      onValue(dbRef, (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+          records.push(childSnapshot.val());
+        });
+        setH_(records[10]);
+        setA_(records[0]);
+        setB_(records[1]);
+        setC_(records[2]);
+        setD_(records[3]);
+        setY3_(records[13]);
       });
-      setH_(records[10]);
-      setA_(records[0]);
-      setB_(records[1]);
-      setC_(records[2]);
-      setD_(records[3]);
-      setY3_(records[13]);
-      
-    });
-  }
-    else
-  {
-    router.push('/');
-  }
+    } else {
+      router.push("/");
+    }
   });
 
   const uid = user;
@@ -115,7 +109,6 @@ const Year3 = () => {
           [name]: value,
         };
       });
-      
     } else {
       alert("data submitted already");
     }
@@ -123,9 +116,8 @@ const Year3 = () => {
   const reload = (event) => {
     event.preventDefault();
 
-    router.push('Firstpage');
+    router.push("Firstpage");
   };
-
 
   const handleCheck = (event) => {
     event.preventDefault();
@@ -133,7 +125,7 @@ const Year3 = () => {
       let name = event.target.name;
       let value = event.target.value;
       let Aeval = Math.round(((allValues.A * (100 + inc.A)) / 100) * 100) / 100;
-      let Beval = Math.round(((allValues.B* (100 + inc.B)) / 100) * 100) / 100;
+      let Beval = Math.round(((allValues.B * (100 + inc.B)) / 100) * 100) / 100;
       let Ceval = Math.round(((allValues.C * (100 + inc.C)) / 100) * 100) / 100;
       let Deval = Math.round(((allValues.D * (100 + inc.D)) / 100) * 100) / 100;
       let sum =
@@ -141,7 +133,7 @@ const Year3 = () => {
         parseFloat(allValues.B) +
         parseFloat(allValues.C) +
         parseFloat(allValues.D);
-     
+
       if (sum > holding) {
         alert(
           "your invested amount is greaterthan your holding not possible please reassign"
@@ -172,7 +164,7 @@ const Year3 = () => {
           };
         });
 
-        let esum=Math.round((Aeval+Beval+Ceval+Deval) * 100) / 100;
+        let esum = Math.round((Aeval + Beval + Ceval + Deval) * 100) / 100;
 
         try {
           const postListRef2 = ref(db, "users/" + uid + "/year3");
@@ -183,7 +175,7 @@ const Year3 = () => {
             Deval,
             total_amount: esum,
             timestamp: serverTimestamp(),
-            changeinthisyear:esum-allValues.hold,
+            changeinthisyear: esum - allValues.hold,
           });
           const postListRef = ref(db, "users/" + uid);
           update(
@@ -196,7 +188,6 @@ const Year3 = () => {
               y3: true,
               total_amount: esum,
               timestamp: serverTimestamp(),
-              
             },
             uid
           );
@@ -217,6 +208,14 @@ const Year3 = () => {
             D: Deval,
           };
         });
+
+        const inputs = document.getElementsByTagName("input['text']");
+        Array.from(inputs).forEach((input) => {
+          input.readOnly = true;
+        });
+        document.querySelector("#submit").disabled = true;
+        document.querySelector("#submit").textContent =
+          "Submission no more allowed";
       }
     }
   };
@@ -244,7 +243,7 @@ const Year3 = () => {
           onClick={reload}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
         >
-         RELOAD
+          RELOAD
         </button>
         <button
           onClick={startYear}
@@ -256,11 +255,47 @@ const Year3 = () => {
           <div className="flex flex-row justify-center gap-3">
             <div className="flex flex-col bg-white items-center font-bold text-lg px-4 py-8 rounded-lg shadow-md gap-3">
               Equities
+              {data[1].A >= 0 ? (
+                <p className="text-green-700 font-bold inline-block px-4 py-2 rounded-full bg-gray-100 flex items-end">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="feather feather-chevron-up"
+                  >
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                  </svg>
+                  {data[1].A}%
+                </p>
+              ) : (
+                <p className="text-red-700 font-bold inline-block px-4 py-2 rounded-full bg-gray-100 flex flex-row items-end">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="feather feather-chevron-down"
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                  {data[1].A}%
+                </p>
+              )}
               <p className="font-light text-sm text-center">
                 An equity investment is money that is invested in a company by
                 purchasing shares of that company in the stock market
-             <br/>
-               last year the growth rate of this asset was {data[1].A}%
+                <br />
               </p>
               <input
                 type="text"
@@ -273,12 +308,48 @@ const Year3 = () => {
 
             <div className="flex flex-col bg-white items-center font-bold text-lg px-4 py-8 rounded-lg shadow-md gap-3">
               Bonds
+              {data[1].B >= 0 ? (
+                <p className="text-green-700 font-bold inline-block px-4 py-2 rounded-full bg-gray-100 flex items-end">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="feather feather-chevron-up"
+                  >
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                  </svg>
+                  {data[1].B}%
+                </p>
+              ) : (
+                <p className="text-red-700 font-bold inline-block px-4 py-2 rounded-full bg-gray-100 flex flex-row items-end">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="feather feather-chevron-down"
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                  {data[1].B}%
+                </p>
+              )}
               <p className="font-light text-sm text-center">
                 A bond is a fixed-income investment that represents a loan made
                 by an investor to a borrower, ususally corporate or
                 governmental.
-            
-                <br/>last year the growth rate of this asset was {data[1].B}%
+                <br />
               </p>
               <input
                 type="text"
@@ -293,13 +364,49 @@ const Year3 = () => {
           <div className="flex flex-row justify-center gap-3">
             <div className="flex flex-col bg-white items-center font-bold text-lg px-4 py-8 rounded-lg shadow-md gap-3">
               Crypto
+              {data[0].C >= 0 ? (
+                <p className="text-green-700 font-bold inline-block px-4 py-2 rounded-full bg-gray-100 flex items-end">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="feather feather-chevron-up"
+                  >
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                  </svg>
+                  {data[0].C}%
+                </p>
+              ) : (
+                <p className="text-red-700 font-bold inline-block px-4 py-2 rounded-full bg-gray-100 flex flex-row items-end">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="feather feather-chevron-down"
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                  {data[0].C}%
+                </p>
+              )}
               <p className="font-light text-sm text-center">
                 A cryptocurrency, crypto-currency, or crypto is a digital
                 currency designed to work as a medium of exchange through a
                 computer network that is not reliant on any central authority,
                 such as a government or bank, to uphold or maintain it.
-            
-                <br/>last year the growth rate of this asset was {data[1].C}%
+                <br />
               </p>
               <input
                 type="text"
@@ -312,13 +419,49 @@ const Year3 = () => {
 
             <div className="flex flex-col bg-white items-center font-bold text-lg px-4 py-8 rounded-lg shadow-md gap-3">
               Commodities
+              {data[0].D >= 0 ? (
+                <p className="text-green-700 font-bold inline-block px-4 py-2 rounded-full bg-gray-100 flex items-end">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="feather feather-chevron-up"
+                  >
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                  </svg>
+                  {data[0].D}%
+                </p>
+              ) : (
+                <p className="text-red-700 font-bold inline-block px-4 py-2 rounded-full bg-gray-100 flex flex-row items-end">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="feather feather-chevron-down"
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                  {data[0].D}%
+                </p>
+              )}
               <p className="font-light text-sm text-center">
                 A commodity is a basic good used in commerce that is
                 interchangeable with other goods of the same type. Commodities
                 are most often used as inputs in the production of other goods
                 or services.
-            
-                <br/>last year the growth rate of this asset was {data[1].D}%
+                <br />
               </p>
               <input
                 type="text"
@@ -333,6 +476,7 @@ const Year3 = () => {
         <button
           onClick={handleCheck}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
+          id="submit"
         >
           Submit
         </button>
