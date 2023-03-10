@@ -15,6 +15,7 @@
     "next": "13.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "reinstall-node-modules": "^2.0.0",
     "swc-loader": "^0.2.3"
   },
   "devDependencies": {
