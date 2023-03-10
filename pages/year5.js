@@ -43,7 +43,7 @@ const Year5 = () => {
     if (localStorage.getItem("accessToken") !== null) {
       setInterval(() => {
         const countdownDate1 = new Date(
-          "Mar 10, 2023 12:47:00 GMT+0530"
+          "Mar 10, 2023 17:48:00 GMT+0530"
         ).getTime();
         let now = new Date().getTime();
         if (now >= countdownDate1) {
@@ -65,6 +65,7 @@ const Year5 = () => {
         setD_(records[3]);
         setY5_(records[14]);
       });
+      console.log("records",records)
     } else {
       router.push("/");
     }
@@ -76,16 +77,7 @@ const Year5 = () => {
   const startYear = (event) => {
     event.preventDefault();
 
-    const dbRef4 = ref(getDatabase());
-    get(child(dbRef4, `users/${uid}/year4`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        setSAmount((snapshot.val().total_amount));
-      } else {
-        alert("No data available");
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
+    
     if (!sy) {
       setSy(true);
       setAllValues((prevalue) => {
@@ -252,7 +244,7 @@ const Year5 = () => {
         <h4 className="inline-block px-4 py-3 bg-white rounded-lg my-2 items-center text-center shadow-md">
           Your Capital
           <br />
-          <span className="font-bold text-xl">{sAmount}</span>
+          <span className="font-bold text-xl">{allValues.hold}</span>
         </h4>
 
         <p className="text-lg font-light text-center my-1 text-slate-600">
@@ -384,7 +376,7 @@ const Year5 = () => {
           <div className="flex flex-row justify-center gap-3">
             <div className="flex flex-col bg-white items-center font-bold text-lg px-4 py-8 rounded-lg shadow-md gap-3">
               Crypto
-              {data[2].C >= 0 ? (
+              {data[3].C >= 0 ? (
                 <p className="text-green-700 font-bold inline-block px-4 py-2 rounded-full bg-gray-100 flex items-end">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -473,7 +465,7 @@ const Year5 = () => {
                   >
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
-                  {data[2].D}%
+                  {data[3].D}%
                 </p>
               )}
               <p className="font-light text-sm text-center">

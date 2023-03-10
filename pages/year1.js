@@ -43,7 +43,7 @@ const Year1 = () => {
 
       setInterval(() => {
         const countdownDate1 = new Date(
-          "Mar 10, 2023 12:43:00 GMT+0530"
+          "Mar 10, 2023 17:30:00 GMT+0530"
         ).getTime();
         let now = new Date().getTime();
         if (now >= countdownDate1) {
@@ -242,7 +242,7 @@ const Year1 = () => {
         <h4 className="inline-block px-4 py-3 bg-white rounded-lg my-2 items-center text-center shadow-md">
           Your Capital
           <br />
-          <span className="font-bold text-xl">{sAmount}</span>
+          <span className="font-bold text-xl">{allValues.hold}</span>
         </h4>
 
         <p className="text-lg font-light text-center my-1 text-slate-600">

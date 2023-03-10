@@ -29,15 +29,13 @@ const Year2 = () => {
   const [y2_, setY2_] = useState(false);
 
   let [inc, setInc] = useState({
-    A: data[1].A,
-    B: data[1].B,
-    C: data[1].C,
-    D: data[1].D,
+    A: data[2].A,
+    B: data[2].B,
+    C: data[2].C,
+    D: data[2].D,
   });
-  
   const [user, setUser] = useState(null);
-  const [sAmount, setSAmount] = useState(0);
-
+  const [sAmount,setSAmount]=useState(0)
   useEffect(() => {
     const userInfo = fetchUser();
 
@@ -45,7 +43,7 @@ const Year2 = () => {
     if (localStorage.getItem("accessToken") !== null) {
       setInterval(() => {
         const countdownDate1 = new Date(
-          "Mar 10, 2023 12:44:00 GMT+0530"
+          "Mar 10, 2023 17:32:00 GMT+0530"
         ).getTime();
         let now = new Date().getTime();
         if (now >= countdownDate1) {
@@ -65,7 +63,7 @@ const Year2 = () => {
         setB_(records[1]);
         setC_(records[2]);
         setD_(records[3]);
-        setY2_(records[12]);
+        setY2_(records[13]);
       });
     } else {
       router.push("/");
@@ -76,16 +74,7 @@ const Year2 = () => {
 
   const startYear = (event) => {
     event.preventDefault();
-    const dbRef4 = ref(getDatabase());
-    get(child(dbRef4, `users/${uid}/year1`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        setSAmount((snapshot.val()).total_amount);
-      } else {
-        alert("No data available");
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
+   
     if (!sy) {
       setSy(true);
       setAllValues((prevalue) => {
@@ -104,13 +93,15 @@ const Year2 = () => {
       setC__(C_);
       setD__(D_);
       setHolding(H_);
+
+      setHolding(H_);
     }
     const postListRef2 = ref(db, "users/" + uid + "/year2");
-          set(postListRef2, {
-           
-            total_amount: H_,
-           
-          });
+    set(postListRef2, {
+     
+      total_amount: H_,
+     
+    });
   };
 
   const handleChange = (event) => {
@@ -202,8 +193,9 @@ const Year2 = () => {
               Beval,
               Ceval,
               Deval,
-              total_amount: esum,
               y2: true,
+              total_amount: esum,
+              
               timestamp: serverTimestamp(),
             },
             uid
@@ -250,13 +242,12 @@ const Year2 = () => {
         <h4 className="inline-block px-4 py-3 bg-white rounded-lg my-2 items-center text-center shadow-md">
           Your Capital
           <br />
-          <span className="font-bold text-xl">{sAmount}</span>
+          <span className="font-bold text-xl">{allValues.hold}</span>
         </h4>
 
         <p className="text-lg font-light text-center my-1 text-slate-600">
           Divide your capital among the 4 asset classes
         </p>
-
         {!y2_? <button
           onClick={reload}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
@@ -270,9 +261,6 @@ const Year2 = () => {
         >
           Start year
         </button>: null}
-
-       
-      
         <div className="flex flex-col gap-3">
           <div className="flex flex-row justify-center gap-3">
             <div className="flex flex-col bg-white items-center font-bold text-lg px-4 py-8 rounded-lg shadow-md gap-3">
