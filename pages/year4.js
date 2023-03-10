@@ -43,7 +43,7 @@ const Year4 = () => {
     if (localStorage.getItem("accessToken") !== null) {
       setInterval(() => {
         const countdownDate1 = new Date(
-          "Mar 10, 2023 08:46:00 GMT+0530"
+          "Mar 10, 2023 12:46:00 GMT+0530"
         ).getTime();
         let now = new Date().getTime();
         if (now >= countdownDate1) {
@@ -258,18 +258,19 @@ const Year4 = () => {
         <p className="text-lg font-light text-center my-1 text-slate-600">
           Divide your capital among the 4 asset classes
         </p>
-        <button
+        {!y4_? <button
           onClick={reload}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
         >
           RELOAD
-        </button>
-        <button
+        </button>: null}
+
+        {!y4_?  <button
           onClick={startYear}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
         >
           Start year
-        </button>
+        </button>: null}
         <div className="flex flex-col gap-3">
           <div className="flex flex-row justify-center gap-3">
             <div className="flex flex-col bg-white items-center font-bold text-lg px-4 py-8 rounded-lg shadow-md gap-3">
