@@ -41,15 +41,7 @@ const Year4 = () => {
 
     setUser(userInfo);
     if (localStorage.getItem("accessToken") !== null) {
-      setInterval(() => {
-        const countdownDate1 = new Date(
-          "Mar 10, 2023 17:36:00 GMT+0530"
-        ).getTime();
-        let now = new Date().getTime();
-        if (now >= countdownDate1) {
-          router.replace("year5");
-        }
-      }, 1000);
+     
 
       const dbRef = ref(db, `users/${user}`);
 
@@ -68,7 +60,20 @@ const Year4 = () => {
     } else {
       router.push("/");
     }
-  });
+  },[user, router]);
+  useEffect(()=>
+  {
+    setInterval(() => {
+      const countdownDate1 = new Date(
+        "Mar 10, 2023 19:26:00 GMT+0530"
+      ).getTime();
+      let now = new Date().getTime();
+      if (now >= countdownDate1) {
+        router.replace("year5");
+      }
+    }, 1000); 
+    
+  })
 
   const uid = user;
   const [sAmount, setSAmount] = useState(0);
@@ -249,14 +254,14 @@ const Year4 = () => {
         <p className="text-lg font-light text-center my-1 text-slate-600">
           Divide your capital among the 4 asset classes
         </p>
-        {!y4_? <button
+        {!issub? <button
           onClick={reload}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
         >
           RELOAD
         </button>: null}
 
-        {!y4_?  <button
+        {!issub?  <button
           onClick={startYear}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
         >
@@ -484,7 +489,7 @@ const Year4 = () => {
             </div>
           </div>
         </div>
-        {!y4_? <button
+        {!issub? <button
           onClick={handleCheck}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
           id="submit"

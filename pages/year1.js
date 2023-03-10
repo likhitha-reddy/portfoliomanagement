@@ -36,20 +36,25 @@ const Year1 = () => {
   });
   const [user, setUser] = useState(null);
   const [sAmount, setSAmount] = useState(0);
+  useEffect(()=>
+  {
+    setInterval(() => {
+      const countdownDate1 = new Date(
+        "Mar 10, 2023 19:23:00 GMT+0530"
+      ).getTime();
+      let now = new Date().getTime();
+      if (now >= countdownDate1) {
+        router.replace("year2");
+      }
+    }, 1000); 
+    
+  })
   useEffect(() => {
     if (localStorage.getItem("accessToken") !== null) {
       const userInfo = fetchUser();
       setUser(userInfo);
 
-      setInterval(() => {
-        const countdownDate1 = new Date(
-          "Mar 10, 2023 17:30:00 GMT+0530"
-        ).getTime();
-        let now = new Date().getTime();
-        if (now >= countdownDate1) {
-          router.replace("year2");
-        }
-      }, 1000);
+      
 
       const dbRef = ref(db, `users/${user}`);
       let records = [];
@@ -67,7 +72,7 @@ const Year1 = () => {
     } else {
       router.push("/");
     }
-  });
+  },[user, router]);
 
   const uid = user;
 
@@ -248,13 +253,13 @@ const Year1 = () => {
         <p className="text-lg font-light text-center my-1 text-slate-600">
           Divide your capital among the 4 asset classes
         </p>
-        {!y1_?<button
+        {!issub?<button
           onClick={reload}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
         >
           RELOAD
         </button>: null}
-        {!y1_?<button
+        {!issub?<button
           onClick={startYear}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
         >
@@ -333,7 +338,7 @@ const Year1 = () => {
             </div>
           </div>
         </div>
-        {!y1_? <button
+        {!issub? <button
           onClick={handleCheck}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
           id="submit"
