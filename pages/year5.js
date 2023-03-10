@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { db } from "./firebase_data";
 import { fetchUser } from "./fetchDetails";
-import { onValue, ref, serverTimestamp, set, update } from "firebase/database";
+import { child, get, getDatabase, onValue, ref, serverTimestamp, set, update } from "firebase/database";
 import data from "./values.json";
 const Year5 = () => {
   const router = useRouter();
@@ -21,13 +21,13 @@ const Year5 = () => {
   const [C_, setC_] = useState(0);
   const [D_, setD_] = useState(0);
   const [H_, setH_] = useState(0);
-
   const [sy, setSy] = useState(false);
 
   const [A__, setA__] = useState(0);
   const [B__, setB__] = useState(0);
   const [C__, setC__] = useState(0);
   const [D__, setD__] = useState(0);
+  const [y5_, setY5_] = useState(false);
 
   let [inc, setInc] = useState({
     A: data[4].A,
@@ -43,7 +43,7 @@ const Year5 = () => {
     if (localStorage.getItem("accessToken") !== null) {
       setInterval(() => {
         const countdownDate1 = new Date(
-          "Mar 10, 2023 00:35:00 GMT+0530"
+          "Mar 10, 2023 08:46:00 GMT+0530"
         ).getTime();
         let now = new Date().getTime();
         if (now >= countdownDate1) {
@@ -63,6 +63,7 @@ const Year5 = () => {
         setB_(records[1]);
         setC_(records[2]);
         setD_(records[3]);
+        setY5_(records[14]);
       });
     } else {
       router.push("/");
@@ -70,9 +71,21 @@ const Year5 = () => {
   });
 
   const uid = user;
+  const [sAmount, setSAmount] = useState(0);
 
   const startYear = (event) => {
     event.preventDefault();
+
+    const dbRef4 = ref(getDatabase());
+    get(child(dbRef4, `users/${uid}/year4`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        setSAmount((snapshot.val().total_amount));
+      } else {
+        alert("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
     if (!sy) {
       setSy(true);
       setAllValues((prevalue) => {
@@ -91,7 +104,15 @@ const Year5 = () => {
       setC__(C_);
       setD__(D_);
       setHolding(H_);
+
+      setHolding(H_);
     }
+    const postListRef2 = ref(db, "users/" + uid + "/year5");
+    set(postListRef2, {
+     
+      total_amount: H_,
+     
+    });
   };
 
   const handleChange = (event) => {
@@ -119,7 +140,7 @@ const Year5 = () => {
 
   const handleCheck = (event) => {
     event.preventDefault();
-    if (!issub) {
+    if (!y5_) {
       let name = event.target.name;
       let value = event.target.value;
       let Aeval = Math.round(((allValues.A * (100 + inc.A)) / 100) * 100) / 100;
@@ -166,15 +187,15 @@ const Year5 = () => {
 
         try {
           const postListRef2 = ref(db, "users/" + uid + "/year5");
-          set(postListRef2, {
+          update(postListRef2, {
             Aeval,
             Beval,
             Ceval,
             Deval,
             total_amount: esum,
             timestamp: serverTimestamp(),
-            changeinthisyear: esum - allValues.hold,
-          });
+            diff: esum - allValues.hold,
+          },uid);
           const postListRef = ref(db, "users/" + uid);
           update(
             postListRef,
@@ -191,6 +212,7 @@ const Year5 = () => {
           );
 
           setIssub(true);
+          setY5_(true);
         } catch (err) {
           alert(err);
         }
@@ -205,6 +227,7 @@ const Year5 = () => {
             D: Deval,
           };
         });
+
         const inputs = document.getElementsByTagName("input['text']");
         Array.from(inputs).forEach((input) => {
           input.readOnly = true;
@@ -229,7 +252,7 @@ const Year5 = () => {
         <h4 className="inline-block px-4 py-3 bg-white rounded-lg my-2 items-center text-center shadow-md">
           Your Capital
           <br />
-          <span className="font-bold text-xl">{allValues.hold}</span>
+          <span className="font-bold text-xl">{sAmount}</span>
         </h4>
 
         <p className="text-lg font-light text-center my-1 text-slate-600">
@@ -360,7 +383,7 @@ const Year5 = () => {
           <div className="flex flex-row justify-center gap-3">
             <div className="flex flex-col bg-white items-center font-bold text-lg px-4 py-8 rounded-lg shadow-md gap-3">
               Crypto
-              {data[3].C >= 0 ? (
+              {data[2].C >= 0 ? (
                 <p className="text-green-700 font-bold inline-block px-4 py-2 rounded-full bg-gray-100 flex items-end">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -449,7 +472,7 @@ const Year5 = () => {
                   >
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
-                  {data[3].D}%
+                  {data[2].D}%
                 </p>
               )}
               <p className="font-light text-sm text-center">
@@ -469,13 +492,20 @@ const Year5 = () => {
             </div>
           </div>
         </div>
-        <button
+        {!y4_? <button
           onClick={handleCheck}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
           id="submit"
         >
           Submit
-        </button>
+        </button>: <button
+          
+          className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
+          id="submit"
+        >
+          No more submission allowed
+        </button>}
+       
       </div>
     </div>
   );

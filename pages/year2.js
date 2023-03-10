@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { db } from "./firebase_data";
 import { fetchUser } from "./fetchDetails";
-import { onValue, ref, serverTimestamp, set, update } from "firebase/database";
+import { child, get, getDatabase, onValue, ref, serverTimestamp, set, update } from "firebase/database";
 import data from "./values.json";
 const Year2 = () => {
   const router = useRouter();
@@ -34,7 +34,10 @@ const Year2 = () => {
     C: data[1].C,
     D: data[1].D,
   });
+  
   const [user, setUser] = useState(null);
+  const [sAmount, setSAmount] = useState(0);
+
   useEffect(() => {
     const userInfo = fetchUser();
 
@@ -42,7 +45,7 @@ const Year2 = () => {
     if (localStorage.getItem("accessToken") !== null) {
       setInterval(() => {
         const countdownDate1 = new Date(
-          "Mar 10, 2023 00:25:00 GMT+0530"
+          "Mar 10, 2023 08:42:00 GMT+0530"
         ).getTime();
         let now = new Date().getTime();
         if (now >= countdownDate1) {
@@ -73,6 +76,16 @@ const Year2 = () => {
 
   const startYear = (event) => {
     event.preventDefault();
+    const dbRef4 = ref(getDatabase());
+    get(child(dbRef4, `users/${uid}/year1`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        setSAmount((snapshot.val()).total_amount);
+      } else {
+        alert("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
     if (!sy) {
       setSy(true);
       setAllValues((prevalue) => {
@@ -92,6 +105,12 @@ const Year2 = () => {
       setD__(D_);
       setHolding(H_);
     }
+    const postListRef2 = ref(db, "users/" + uid + "/year2");
+          set(postListRef2, {
+           
+            total_amount: H_,
+           
+          });
   };
 
   const handleChange = (event) => {
@@ -166,15 +185,15 @@ const Year2 = () => {
 
         try {
           const postListRef2 = ref(db, "users/" + uid + "/year2");
-          set(postListRef2, {
+          update(postListRef2, {
             Aeval,
             Beval,
             Ceval,
             Deval,
             total_amount: esum,
             timestamp: serverTimestamp(),
-            changeinthisyear: esum - allValues.hold,
-          });
+            diff: esum - allValues.hold,
+          },uid);
           const postListRef = ref(db, "users/" + uid);
           update(
             postListRef,
@@ -231,7 +250,7 @@ const Year2 = () => {
         <h4 className="inline-block px-4 py-3 bg-white rounded-lg my-2 items-center text-center shadow-md">
           Your Capital
           <br />
-          <span className="font-bold text-xl">{allValues.hold}</span>
+          <span className="font-bold text-xl">{sAmount}</span>
         </h4>
 
         <p className="text-lg font-light text-center my-1 text-slate-600">
@@ -471,13 +490,20 @@ const Year2 = () => {
             </div>
           </div>
         </div>
-        <button
+        {!y2_? <button
           onClick={handleCheck}
           className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
           id="submit"
         >
           Submit
-        </button>
+        </button>: <button
+          
+          className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
+          id="submit"
+        >
+          No more submission allowed
+        </button>}
+       
       </div>
     </div>
   );
