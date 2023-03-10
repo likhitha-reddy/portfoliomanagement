@@ -36,19 +36,7 @@ const Year5 = () => {
     D: data[4].D,
   });
   const [user, setUser] = useState(null);
-  useEffect(()=>
-  {
-    setInterval(() => {
-      const countdownDate1 = new Date(
-        "Mar 10, 2023 19:27:00 GMT+0530"
-      ).getTime();
-      let now = new Date().getTime();
-      if (now >= countdownDate1) {
-        router.replace("thankyou");
-      }
-    }, 1000); 
-    
-  })
+ 
   useEffect(() => {
     const userInfo = fetchUser();
 
@@ -67,13 +55,26 @@ const Year5 = () => {
         setB_(records[1]);
         setC_(records[2]);
         setD_(records[3]);
-        setY5_(records[14]);
+        setY5_(records[15]);
       });
       console.log("records",records)
     } else {
       router.push("/");
     }
   },[user, router]);
+  useEffect(()=>
+  {
+    setInterval(() => {
+      const countdownDate1 = new Date(
+        "Mar 12, 2023 00:29:00 GMT+0530"
+      ).getTime();
+      let now = new Date().getTime();
+      if (now >= countdownDate1) {
+        router.replace("thankyou");
+      }
+    }, 1000); 
+    
+  })
 
   const uid = user;
   const [sAmount, setSAmount] = useState(0);
@@ -101,14 +102,9 @@ const Year5 = () => {
       setD__(D_);
       setHolding(H_);
 
-      setHolding(H_);
+    
     }
-    const postListRef2 = ref(db, "users/" + uid + "/year5");
-    set(postListRef2, {
-     
-      total_amount: H_,
-     
-    });
+   
   };
 
   const handleChange = (event) => {
@@ -183,7 +179,7 @@ const Year5 = () => {
 
         try {
           const postListRef2 = ref(db, "users/" + uid + "/year5");
-          update(postListRef2, {
+          set(postListRef2, {
             Aeval,
             Beval,
             Ceval,
@@ -191,7 +187,7 @@ const Year5 = () => {
             total_amount: esum,
             timestamp: serverTimestamp(),
             diff: esum - allValues.hold,
-          },uid);
+          });
           const postListRef = ref(db, "users/" + uid);
           update(
             postListRef,

@@ -65,7 +65,7 @@ const Year4 = () => {
   {
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 10, 2023 19:26:00 GMT+0530"
+        "Mar 12, 2023 00:28:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
@@ -101,14 +101,9 @@ const Year4 = () => {
       setD__(D_);
       setHolding(H_);
 
-      setHolding(H_);
+      
     }
-    const postListRef2 = ref(db, "users/" + uid + "/year4");
-    set(postListRef2, {
-     
-      total_amount: H_,
-     
-    });
+    
   };
 
   const handleChange = (event) => {
@@ -183,7 +178,7 @@ const Year4 = () => {
 
         try {
           const postListRef2 = ref(db, "users/" + uid + "/year4");
-          update(postListRef2, {
+          set(postListRef2, {
             Aeval,
             Beval,
             Ceval,
@@ -191,7 +186,7 @@ const Year4 = () => {
             total_amount: esum,
             timestamp: serverTimestamp(),
             diff: esum - allValues.hold,
-          },uid);
+          });
           const postListRef = ref(db, "users/" + uid);
           update(
             postListRef,
