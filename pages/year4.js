@@ -71,7 +71,7 @@ const Year4 = () => {
   useEffect(() => {
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 12, 2023 11:00:00 GMT+0530"
+        "Mar 11, 2023 14:05:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {

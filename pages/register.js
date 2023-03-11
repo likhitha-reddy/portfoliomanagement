@@ -34,7 +34,7 @@ const Register = () => {
         Beval: 0,
         Ceval: 0,
         Deval: 0,
-        total_amount: 100,
+        total_amount: 100000,
 
         password: encryption,
         timestamp: serverTimestamp(),

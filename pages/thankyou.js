@@ -6,6 +6,7 @@ const thankyou = () => {
       <div className="container mx-auto min-h-screen flex flex-col justify-center max-w-xl">
         <h1 className="text-6xl font-bold text-center my-4 uppercase">
           Thank You
+          Winners will be declared later.
         </h1>
       </div>
     </div>
