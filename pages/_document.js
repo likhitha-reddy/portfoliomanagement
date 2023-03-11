@@ -16,6 +16,9 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap"
             rel="stylesheet"
           />
+          <script type="text/javascript">
+            window.onbeforeunload = ()=>{return("Reloading will switch off your values for this year! Proceed with caution.")}
+          </script>
         </Head>
         <body style={{ fontFamily: "Open Sans" }}>
           <Main />
