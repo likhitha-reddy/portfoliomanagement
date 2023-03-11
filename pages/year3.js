@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { db } from "./firebase_data";
-import { fetchUser } from "./fetchDetails";
-import { child, get, getDatabase, onValue, ref, serverTimestamp, set, update } from "firebase/database";
+import { db } from "../firebase_data";
+import { fetchUser } from "../fetchDetails";
+import {
+  child,
+  get,
+  getDatabase,
+  onValue,
+  ref,
+  serverTimestamp,
+  set,
+  update,
+} from "firebase/database";
 import data from "./values.json";
 const Year3 = () => {
   const router = useRouter();
@@ -35,14 +44,12 @@ const Year3 = () => {
     D: data[2].D,
   });
   const [user, setUser] = useState(null);
-  const [sAmount,setSAmount]=useState(0)
+  const [sAmount, setSAmount] = useState(0);
   useEffect(() => {
     const userInfo = fetchUser();
 
     setUser(userInfo);
     if (localStorage.getItem("accessToken") !== null) {
-      
-
       const dbRef = ref(db, `users/${user}`);
 
       let records = [];
@@ -60,25 +67,23 @@ const Year3 = () => {
     } else {
       router.push("/");
     }
-  },[user, router]);
-  useEffect(()=>
-  {
+  }, [user, router]);
+  useEffect(() => {
     setInterval(() => {
       const countdownDate1 = new Date(
-        "Mar 11, 2023 00:27:00 GMT+0530"
+        "Mar 11, 2023 10:45:00 GMT+0530"
       ).getTime();
       let now = new Date().getTime();
       if (now >= countdownDate1) {
         router.replace("year4");
       }
-    }, 1000); 
-    
-  })
+    }, 1000);
+  });
   const uid = user;
 
   const startYear = (event) => {
     event.preventDefault();
-   
+
     if (!sy) {
       setSy(true);
       setAllValues((prevalue) => {
@@ -100,7 +105,6 @@ const Year3 = () => {
 
       setHolding(H_);
     }
-   
   };
 
   const handleChange = (event) => {
@@ -194,7 +198,7 @@ const Year3 = () => {
               Deval,
               y3: true,
               total_amount: esum,
-              
+
               timestamp: serverTimestamp(),
             },
             uid
@@ -247,19 +251,23 @@ const Year3 = () => {
         <p className="text-lg font-light text-center my-1 text-slate-600">
           Divide your capital among the 4 asset classes
         </p>
-        {!issub? <button
-          onClick={reload}
-          className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
-        >
-          RELOAD
-        </button>: null}
+        {!issub ? (
+          <button
+            onClick={reload}
+            className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
+          >
+            RELOAD
+          </button>
+        ) : null}
 
-        {!issub?  <button
-          onClick={startYear}
-          className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
-        >
-          Start year
-        </button>: null}
+        {!issub ? (
+          <button
+            onClick={startYear}
+            className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
+          >
+            Start year
+          </button>
+        ) : null}
         <div className="flex flex-col gap-3">
           <div className="flex flex-row justify-center gap-3">
             <div className="flex flex-col bg-white items-center font-bold text-lg px-4 py-8 rounded-lg shadow-md gap-3">
@@ -482,20 +490,22 @@ const Year3 = () => {
             </div>
           </div>
         </div>
-        {!issub? <button
-          onClick={handleCheck}
-          className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
-          id="submit"
-        >
-          Submit
-        </button>: <button
-          
-          className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
-          id="submit"
-        >
-          No more submission allowed
-        </button>}
-       
+        {!issub ? (
+          <button
+            onClick={handleCheck}
+            className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
+            id="submit"
+          >
+            Submit
+          </button>
+        ) : (
+          <button
+            className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg my-3"
+            id="submit"
+          >
+            No more submission allowed
+          </button>
+        )}
       </div>
     </div>
   );

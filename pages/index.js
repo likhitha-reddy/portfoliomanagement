@@ -5,7 +5,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { app, db } from "./firebase_data";
+import { app, db } from "../firebase_data";
 import { SHA256 } from "crypto-js";
 import { ref, set } from "firebase/database";
 
@@ -34,7 +34,6 @@ export default function Home() {
           localStorage.setItem("userId", JSON.stringify(user.uid));
 
           localStorage.setItem("accessToken", JSON.stringify(refreshToken));
-          
 
           router.replace("/Firstpage");
         }

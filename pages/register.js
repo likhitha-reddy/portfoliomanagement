@@ -1,7 +1,7 @@
 import { ref, serverTimestamp, set } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { app, db } from "./firebase_data";
+import { app, db } from "../firebase_data";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { SHA256 } from "crypto-js";
 
