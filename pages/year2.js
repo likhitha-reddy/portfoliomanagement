@@ -235,7 +235,7 @@ const Year2 = () => {
 
   return (
     <div className="min-h-screen min-w-full bg-slate-200 ">
-      <div className="container mx-auto min-h-screen flex flex-col justify-center max-w-xl items-center">
+      <div className="container mx-auto min-h-screen flex flex-col justify-center max-w-xl items-center px-1">
         <h1 className="text-6xl font-bold text-center my-3 uppercase">
           Portfolio Ventures
         </h1>
@@ -270,7 +270,7 @@ const Year2 = () => {
           </button>
         ) : null}
         <div className="flex flex-col gap-3">
-          <div className="flex flex-row justify-center gap-3">
+          <div className="flex flex-col md:flex-row justify-center gap-3">
             <div className="flex flex-col bg-white items-center font-bold text-lg px-4 py-8 rounded-lg shadow-md gap-3">
               Equities
               {data[0].A >= 0 ? (
@@ -379,7 +379,7 @@ const Year2 = () => {
             </div>
           </div>
 
-          <div className="flex flex-row justify-center gap-3">
+          <div className="flex flex-col md:flex-row justify-center gap-3">
             <div className="flex flex-col bg-white items-center font-bold text-lg px-4 py-8 rounded-lg shadow-md gap-3">
               Crypto
               {data[0].C >= 0 ? (
